@@ -1,8 +1,27 @@
 var errormessage = "";
         var missingfields = "";
+
         function isEmail(email) {
             var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             return regex.test(email);
+        }
+
+        // Restrict Phone Number input to digits only
+        $("#Phoneno").on("input", function () {
+            this.value = this.value.replace(/\D/g, '');
+        });
+
+        // Toggle password visibility
+        function togglePasswordVisibility(id, toggleBtnId) {
+            const input = document.getElementById(id);
+            const btn = document.getElementById(toggleBtnId);
+            if (input.type === "password") {
+                input.type = "text";
+                btn.textContent = "Hide";
+            } else {
+                input.type = "password";
+                btn.textContent = "Show";
+            }
         }
 
         $("#submitbutton").click(function () {
@@ -22,10 +41,10 @@ var errormessage = "";
                 missingfields += "<p>Confirm password is required.</p>";
             }
 
-            if (isEmail($("#Email").val()) == false) {
+            if (!isEmail($("#Email").val())) {
                 errormessage += "<p>Please enter a valid email address.</p>";
             }
-            if ($.isNumeric($("#Phoneno").val()) == false) {
+            if (!$.isNumeric($("#Phoneno").val())) {
                 errormessage += "<p>Please enter a valid phone number.</p>";
             }
             if ($("#Password").val() != $("#confirmpassword").val()) {
@@ -34,9 +53,8 @@ var errormessage = "";
 
             if (errormessage == "" && missingfields == "") {
                 alert("Form submitted successfully!");
-            }
-            else {
+                $("#error").html(""); // clear error messages
+            } else {
                 $("#error").html(errormessage + missingfields);
-
             }
         });
